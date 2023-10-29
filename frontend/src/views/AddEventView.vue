@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+
 </script>
 
 <template>
-  <RouterView />
+  <h1>Add event page</h1>
+  <RouterLink to="/">Home</RouterLink>
 </template>
 
 <style scoped>
+
 </style>
