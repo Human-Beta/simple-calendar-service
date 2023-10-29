@@ -1,13 +1,28 @@
 package ua.mykyta.projects.simplecalendarservice.dto;
 
+import ua.mykyta.projects.simplecalendarservice.validator.DateInFuture;
+import ua.mykyta.projects.simplecalendarservice.validator.DateRange;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+@DateRange
 public class EventDTO {
 	private long id;
+
+	@NotBlank(message = "Event title should not be blank")
 	private String title;
+
 	private String description;
+
+	@NotNull(message = "Start date of event is absent")
+	@DateInFuture
 	private LocalDateTime startDate;
+
+	@NotNull(message = "End date of event is absent")
 	private LocalDateTime endDate;
+
 	private String location;
 
 	public long getId() {

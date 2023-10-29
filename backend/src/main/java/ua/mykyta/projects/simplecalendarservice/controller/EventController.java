@@ -16,6 +16,7 @@ import ua.mykyta.projects.simplecalendarservice.dto.EventDTO;
 import ua.mykyta.projects.simplecalendarservice.facade.EventFacade;
 import ua.mykyta.projects.simplecalendarservice.service.impl.MapperService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,10 +41,9 @@ public class EventController {
 		return mapperService.mapAll(events, EventDTO.class);
 	}
 
-//	TODOM: add validation. Title, startDate, endDate are required fields
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public EventDTO addEvent(@RequestBody final EventDTO event) {
+	public EventDTO addEvent(@RequestBody @Valid final EventDTO event) {
 		final EventData eventData = toData(event);
 
 		return toDTO(eventFacade.saveEvent(eventData));
@@ -62,9 +62,8 @@ public class EventController {
 		return toDTO(eventFacade.findEvent(id));
 	}
 
-//	TODOM: add validation for event
 	@PutMapping("/{id}")
-	public EventDTO updateEvent(@PathVariable final long id, @RequestBody final EventDTO event) {
+	public EventDTO updateEvent(@PathVariable final long id, @RequestBody @Valid final EventDTO event) {
 		final EventData eventData = toData(event);
 		eventData.setId(id);
 
