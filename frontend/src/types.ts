@@ -1,5 +1,5 @@
 export interface CalendarDay {
-  date: Date,
+  date: Date
   events: Event[]
 }
 
