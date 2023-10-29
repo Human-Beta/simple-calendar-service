@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// TODOM: replace "../..." to "@/..." in the whole project
-import CalendarView from '@/views/CalendarView.vue'
+import HomeView from '@/views/HomeView.vue'
 import AddEventView from '@/views/AddEventView.vue'
 import EventDetailsView from '@/views/EventDetailsView.vue'
 
@@ -9,8 +8,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'calendar',
-      component: CalendarView
+      name: 'home',
+      component: HomeView
     },
     {
       path: '/add-event',
