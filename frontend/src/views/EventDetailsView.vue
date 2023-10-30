@@ -50,27 +50,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { defineRule, Form, Field, ErrorMessage } from 'vee-validate'
-
-defineRule('required', (value, params, ctx) => {
-  return value ? true : `${ctx.name} is required`
-})
-
-defineRule('before', (value: string, params: [Date, string], ctx) => {
-  const date = params[0]
-  const dateName = params[1]
-  return new Date(value).valueOf() <= date.valueOf()
-    ? true
-    : `${ctx.name} should be before ${dateName}`
-})
-
-defineRule('after', (value: string, params: [Date, string], ctx) => {
-  const date = params[0]
-  const dateName = params[1]
-  return new Date(value).valueOf() >= date.valueOf()
-    ? true
-    : `${ctx.name} should be after ${dateName}`
-})
+import { Form, Field, ErrorMessage } from 'vee-validate'
+import { formatDate } from '@/utils/date.utils'
 
 export default defineComponent({
   components: {
@@ -81,6 +62,7 @@ export default defineComponent({
   data() {
     return {
       loading: true,
+      // TODOM: change for loading an event from DB
       event: {
         title: 'Some title',
         description: 'Some description',
@@ -93,7 +75,7 @@ export default defineComponent({
   computed: {
     formattedStartDate: {
       get() {
-        return this.formatDate(this.event.startDate)
+        return formatDate(this.event.startDate)
       },
       set(value: string) {
         this.event.startDate = new Date(value)
@@ -101,7 +83,7 @@ export default defineComponent({
     },
     formattedEndDate: {
       get() {
-        return this.formatDate(this.event.endDate)
+        return formatDate(this.event.endDate)
       },
       set(value: string) {
         this.event.endDate = new Date(value)
@@ -119,83 +101,11 @@ export default defineComponent({
     submitForm() {
       //   TODOM: submit
       console.log('submit')
-    },
-    formatDate(date: Date) {
-      const yyyy = date.getFullYear()
-      const mm = (date.getMonth() + 1).toString().padStart(2, '0')
-      const dd = date.getDate().toString().padStart(2, '0')
-      const hh = date.getHours().toString().padStart(2, '0')
-      const min = date.getMinutes().toString().padStart(2, '0')
-
-      return `${yyyy}-${mm}-${dd}T${hh}:${min}`
     }
   }
 })
 </script>
 
 <style scoped>
-.loader,
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.container {
-  padding: 1em;
-  box-sizing: border-box;
-}
-
-form {
-  flex: 1;
-  max-width: 600px;
-  padding: 1em;
-  border: 1px solid #999;
-  border-radius: 0.5em;
-}
-
-form > div {
-  margin-bottom: 1em;
-}
-
-label {
-  font-weight: bold;
-}
-
-input,
-textarea {
-  padding: 0.8em;
-  width: 100%;
-}
-
-button {
-  width: 100%;
-  padding: 1em;
-  border: none;
-  border-radius: 0.5em;
-  cursor: pointer;
-  margin-bottom: 1em;
-}
-
-button[type="submit"] {
-  background-color: blue;
-  color: white;
-}
-
-button[type="submit"]:hover {
-  background-color: darkblue;
-}
-button[type="button"]:hover {
-  background-color: #c5c5c5;
-}
-
-.error {
-  display: inline-block;
-  color: red;
-}
-
-.error::first-letter {
-  text-transform: uppercase;
-}
+@import '@/assets/event.css';
 </style>
