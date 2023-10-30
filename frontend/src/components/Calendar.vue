@@ -25,8 +25,31 @@ export default defineComponent({
   name: 'EventCalendar',
   components: { Day },
   data() {
+    // TODOM: remove
+    const today = new Date()
+
     return {
-      currentDate: new Date()
+      currentDate: new Date(),
+      events: [
+        {
+          id: 1,
+          title: 'title-1',
+          startDate: new Date(2023, today.getMonth(), today.getDate(), 13),
+          endDate: new Date(2023, today.getMonth(), today.getDate(), 15)
+        },
+        {
+          id: 2,
+          title: 'title-2',
+          startDate: new Date(2023, today.getMonth(), today.getDate(), 10),
+          endDate: new Date(2023, today.getMonth(), today.getDate(), 12)
+        },
+        {
+          id: 3,
+          title: 'title-2',
+          startDate: new Date(2023, today.getMonth(), today.getDate() + 1, 10),
+          endDate: new Date(2023, today.getMonth(), today.getDate() + 1, 12)
+        },
+      ]
     }
   },
   computed: {
@@ -34,28 +57,10 @@ export default defineComponent({
       let date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1)
       const days: CalendarDay[] = []
       while (date.getMonth() === this.currentDate.getMonth()) {
-        let day = {
-          date: new Date(date),
-          events:
-            this.currentDate.getMonth() === 9 && date.getDate() === 29
-              ? [
-                  {
-                    id: '1',
-                    title: 'title-1'
-                  },
-                  {
-                    id: '2',
-                    title: 'title-2'
-                  }
-                ]
-              : this.currentDate.getMonth() === 9 && date.getDate() === 30
-              ? [
-                  {
-                    id: '3',
-                    title: 'title-3'
-                  }
-                ]
-              : []
+        const dayDate = new Date(date)
+        const day = {
+          date: dayDate,
+          events: this.getEventsForDate(dayDate)
         }
         days.push(day)
         date.setDate(date.getDate() + 1)
@@ -72,6 +77,11 @@ export default defineComponent({
     },
     setCurrentMonth() {
       this.currentDate = new Date()
+    },
+    getEventsForDate(date: Date) {
+      return this.events
+          .filter(event => event.startDate.getDate() === date.getDate())
+          .sort((e1, e2) => e1.startDate.valueOf() - e2.startDate.valueOf())
     }
   }
 })
