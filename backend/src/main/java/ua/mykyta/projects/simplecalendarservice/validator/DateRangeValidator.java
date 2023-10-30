@@ -16,6 +16,6 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, EventD
 		final LocalDateTime startDate = event.getStartDate();
 		final LocalDateTime endDate = event.getEndDate();
 
-		return startDate != null && endDate != null && event.getEndDate().isAfter(startDate);
+		return startDate != null && endDate != null && (endDate.isAfter(startDate) || startDate.isEqual(endDate));
 	}
 }
