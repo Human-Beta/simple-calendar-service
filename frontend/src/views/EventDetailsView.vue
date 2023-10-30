@@ -2,7 +2,7 @@
   <div v-if="loading">
     <div class="loader">Loading...</div>
   </div>
-  <div v-else>
+  <div v-else-if="event">
     <div class="container">
       <v-form @submit="submitForm">
         <div>
@@ -52,6 +52,9 @@
 import { defineComponent } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import { formatDate } from '@/utils/date.utils'
+import type { AxiosResponse } from 'axios'
+import type { CalendarEvent, ResponseEvent } from '@/types'
+import { responseEventToCalendarEvent } from '@/utils/event.utils'
 
 export default defineComponent({
   components: {
@@ -61,32 +64,27 @@ export default defineComponent({
   },
   data() {
     return {
-      loading: true,
-      // TODOM: change for loading an event from DB
-      event: {
-        title: 'Some title',
-        description: 'Some description',
-        startDate: new Date(2023, 9, 30, 13),
-        endDate: new Date(2023, 9, 30, 15),
-        location: 'Some location'
-      }
+      event: null as CalendarEvent | null
     }
   },
   computed: {
+    loading() {
+      return this.event === null
+    },
     formattedStartDate: {
       get() {
-        return formatDate(this.event.startDate)
+        return formatDate(this.event!.startDate)
       },
       set(value: string) {
-        this.event.startDate = new Date(value)
+        this.event!.startDate = new Date(value)
       }
     },
     formattedEndDate: {
       get() {
-        return formatDate(this.event.endDate)
+        return formatDate(this.event!.endDate)
       },
       set(value: string) {
-        this.event.endDate = new Date(value)
+        this.event!.endDate = new Date(value)
       }
     }
   },
@@ -95,8 +93,14 @@ export default defineComponent({
   },
   methods: {
     async fetchEvent() {
-      //   TODOM: fetchEvent
-      setTimeout(() => (this.loading = false), 200)
+      this.$http
+        .get(`/events/${this.$route.params.id}`)
+        .then((res: AxiosResponse<ResponseEvent>) => {
+          this.event = responseEventToCalendarEvent(res.data)
+        })
+        .catch((reason) => {
+          alert(reason)
+        })
     },
     submitForm() {
       //   TODOM: submit

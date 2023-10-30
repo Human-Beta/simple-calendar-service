@@ -19,9 +19,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Day from '@/components/Day.vue'
-import type { CalendarDay, CalendarEvent, ResponseEvent } from '@/types'
 import type { AxiosResponse } from 'axios'
+import Day from '@/components/Day.vue'
+import { responseEventToCalendarEvent } from '@/utils/event.utils'
+import type { CalendarDay, CalendarEvent, ResponseEvent } from '@/types'
 
 export default defineComponent({
   name: 'EventCalendar',
@@ -50,11 +51,7 @@ export default defineComponent({
   },
   created() {
     this.$http.get('/events').then((res: AxiosResponse<ResponseEvent[]>) => {
-      this.events = res.data.map((resEvent) => ({
-        ...resEvent,
-        startDate: new Date(resEvent.startDate),
-        endDate: new Date(resEvent.endDate)
-      }))
+      this.events = res.data.map(responseEventToCalendarEvent)
     })
   },
   methods: {
