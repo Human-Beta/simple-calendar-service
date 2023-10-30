@@ -103,8 +103,14 @@ export default defineComponent({
         })
     },
     submitForm() {
-      //   TODOM: submit
-      console.log('submit')
+      this.$http
+          .put(`/events/${this.$route.params.id}`, this.event)
+          .then(() => {
+            this.$router.push('/')
+          })
+          .catch((reason) => {
+            alert(reason)
+          })
     }
   }
 })
