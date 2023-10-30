@@ -42,7 +42,8 @@
         </div>
 
         <button type="submit">Save</button>
-        <button type="button" @click="$router.push('/')">Cancel</button>
+        <button type="button" @click="deleteEvent">Delete</button>
+        <button type="button" @click="goToHomePage">Cancel</button>
       </v-form>
     </div>
   </div>
@@ -92,7 +93,7 @@ export default defineComponent({
     this.fetchEvent()
   },
   methods: {
-    async fetchEvent() {
+    fetchEvent() {
       this.$http
         .get(`/events/${this.$route.params.id}`)
         .then((res: AxiosResponse<ResponseEvent>) => {
@@ -101,6 +102,13 @@ export default defineComponent({
         .catch((reason) => {
           alert(reason)
         })
+    },
+    deleteEvent() {
+      this.$http.delete(`/events/${this.$route.params.id}`)
+          .then(this.goToHomePage)
+          .catch((reason) => {
+            alert(reason)
+          })
     },
     submitForm() {
       this.$http
@@ -111,6 +119,9 @@ export default defineComponent({
           .catch((reason) => {
             alert(reason)
           })
+    },
+    goToHomePage() {
+      this.$router.push('/')
     }
   }
 })
