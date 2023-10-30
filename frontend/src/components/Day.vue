@@ -1,6 +1,6 @@
 <template>
   <div class="day">
-    <strong>{{ day.date.getDate() }}</strong>
+    <strong>{{ day.date.get('date') }}</strong>
     <div class="events">
       <div
         v-for="event in day.events"
@@ -8,7 +8,7 @@
         class="event"
         @click="goToEventDetailsPage(event.id)"
       >
-        {{ event.startDate.toLocaleString('default', { hour: 'numeric' }).replace(' ', '') }}
+        {{ event.startDate.format("hha") }}
         {{ event.title }}
       </div>
     </div>

@@ -51,7 +51,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import { formatDate } from '@/utils/date.utils'
+import { formatDate, parseDate } from '@/utils/date.utils'
 import type { AxiosResponse } from 'axios'
 import type { CalendarEvent, ResponseEvent } from '@/types'
 import { responseEventToCalendarEvent } from '@/utils/event.utils'
@@ -76,7 +76,7 @@ export default defineComponent({
         return formatDate(this.event!.startDate)
       },
       set(value: string) {
-        this.event!.startDate = new Date(value)
+        this.event!.startDate = parseDate(value)
       }
     },
     formattedEndDate: {
@@ -84,7 +84,7 @@ export default defineComponent({
         return formatDate(this.event!.endDate)
       },
       set(value: string) {
-        this.event!.endDate = new Date(value)
+        this.event!.endDate = parseDate(value)
       }
     }
   },

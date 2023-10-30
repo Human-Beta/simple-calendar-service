@@ -1,5 +1,7 @@
+import type { Moment } from "moment";
+
 export interface CalendarDay {
-  date: Date
+  date: Moment
   events: CalendarEvent[]
 }
 
@@ -7,8 +9,8 @@ export interface CalendarEvent {
   id: number
   title: string
   description?: string
-  startDate: Date
-  endDate: Date
+  startDate: Moment
+  endDate: Moment
   location?: string
 }
 

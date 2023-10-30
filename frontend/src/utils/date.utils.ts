@@ -1,12 +1,15 @@
-export const formatDate = (date: Date | null) => {
-  if (date) {
-    const yyyy = date.getFullYear()
-    const mm = (date.getMonth() + 1).toString().padStart(2, '0')
-    const dd = date.getDate().toString().padStart(2, '0')
-    const hh = date.getHours().toString().padStart(2, '0')
-    const min = date.getMinutes().toString().padStart(2, '0')
+import type { Moment } from "moment"
+import moment from "moment";
 
-    return `${yyyy}-${mm}-${dd}T${hh}:${min}`
+export const now = () => moment.utc()
+
+export const copy = (date: Moment) => moment.utc(date);
+
+export const parseDate = (value: string) => moment.utc(value)
+
+export const formatDate = (date: Moment | null) => {
+  if (date) {
+    return date.format("yyyy-MM-DDTHH:mm")
   }
   return null
 }

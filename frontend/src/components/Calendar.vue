@@ -7,12 +7,12 @@
         <div @click="incrementMonth">></div>
       </div>
       <h1 class="month">
-        {{ currentDate.toLocaleString('default', { month: 'long', year: 'numeric' }) }}
+        {{ currentDate.format("MMMM") }}
       </h1>
       <router-link to="/add-event">Add event</router-link>
     </div>
     <div class="calendar">
-      <Day v-for="day in days" :key="day.date.getDate()" :day="day" />
+      <Day v-for="day in days" :key="day.date.valueOf()" :day="day" />
     </div>
   </div>
 </template>
@@ -23,28 +23,30 @@ import type { AxiosResponse } from 'axios'
 import Day from '@/components/Day.vue'
 import { responseEventToCalendarEvent } from '@/utils/event.utils'
 import type { CalendarDay, CalendarEvent, ResponseEvent } from '@/types'
+import type { Moment } from "moment";
+import {copy, now} from "@/utils/date.utils";
 
 export default defineComponent({
   name: 'EventCalendar',
   components: { Day },
   data() {
     return {
-      currentDate: new Date(),
+      currentDate: now(),
       events: [] as CalendarEvent[]
     }
   },
   computed: {
     days() {
-      let date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1)
+      let date = copy(this.currentDate).set('date', 1)
       const days: CalendarDay[] = []
-      while (date.getMonth() === this.currentDate.getMonth()) {
-        const dayDate = new Date(date)
+      while (date.get('month') === this.currentDate.get('month')) {
+        const dayDate = copy(date)
         const day = {
           date: dayDate,
-          events: this.getEventsForDate(dayDate)
+          events: this.getEventsForDate(date)
         }
         days.push(day)
-        date.setDate(date.getDate() + 1)
+        date.set('date', date.get('date') + 1)
       }
       return days
     }
@@ -56,18 +58,18 @@ export default defineComponent({
   },
   methods: {
     decrementMonth() {
-      this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1)
+      this.currentDate = copy(this.currentDate).set('month', this.currentDate.get('month') - 1)
     },
     incrementMonth() {
-      this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1)
+      this.currentDate = copy(this.currentDate).set('month', this.currentDate.get('month') + 1)
     },
     setCurrentMonth() {
-      this.currentDate = new Date()
+      this.currentDate = now()
     },
-    getEventsForDate(date: Date) {
+    getEventsForDate(date: Moment) {
       return this.events
-        .filter((event) => event.startDate.getMonth() === date.getMonth())
-        .filter((event) => event.startDate.getDate() === date.getDate())
+        .filter((event) => event.startDate.get("month") === date.get("month"))
+        .filter((event) => event.startDate.get("date") === date.get("date"))
         .sort((e1, e2) => e1.startDate.valueOf() - e2.startDate.valueOf())
     }
   }

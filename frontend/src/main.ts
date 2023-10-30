@@ -6,6 +6,8 @@ import VueAxios from 'vue-axios'
 import App from './App.vue'
 import router from './router'
 import { defineRule } from 'vee-validate'
+import type { Moment } from "moment";
+import { parseDate } from "@/utils/date.utils";
 
 const app = createApp(App)
 
@@ -15,24 +17,26 @@ defineRule('required', (value, _, ctx) => {
   return value ? true : `${ctx.name} is required`
 })
 
-defineRule('before', (value: string, params: [Date, string], ctx) => {
-  const targetDate = new Date(value)
+defineRule('before', (value: string, params: [Moment, string], ctx) => {
+  const targetDate = parseDate(value)
   const date = params[0]
   const dateName = params[1]
 
-  if (!date || isNaN(date.getTime())) {
+  // TODOM: check it
+  if (!date) {
     return true
   }
 
   return targetDate.valueOf() <= date.valueOf() ? true : `${ctx.name} should be before ${dateName}`
 })
 
-defineRule('after', (value: string, params: [Date, string], ctx) => {
-  const targetDate = new Date(value)
+defineRule('after', (value: string, params: [Moment, string], ctx) => {
+  const targetDate = parseDate(value)
   const date = params[0]
   const dateName = params[1]
 
-  if (!date || isNaN(date.getTime())) {
+  // TODOM: check it
+  if (!date) {
     return true
   }
 
