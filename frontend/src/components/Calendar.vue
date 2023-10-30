@@ -1,5 +1,5 @@
 <template>
-  <div class="root">
+  <div class="container">
     <div class="header">
       <div class="btns">
         <div @click="decrementMonth">&lt;</div>
@@ -88,7 +88,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.root {
+.container {
   margin: 0 auto;
   width: 1200px;
 }

@@ -1,9 +1,9 @@
 export interface CalendarDay {
   date: Date
-  events: Event[]
+  events: CalendarEvent[]
 }
 
-export interface Event {
+export interface CalendarEvent {
   id: number
   title: string
   description?: string
