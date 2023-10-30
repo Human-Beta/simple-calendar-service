@@ -9,6 +9,7 @@
       <h1 class="month">
         {{ currentDate.toLocaleString('default', { month: 'long', year: 'numeric' }) }}
       </h1>
+      <router-link to="/add-event">Add event</router-link>
     </div>
     <div class="calendar">
       <Day v-for="day in days" :key="day.date.getDate()" :day="day" />
@@ -19,37 +20,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Day from '@/components/Day.vue'
-import type { CalendarDay } from '@/types'
+import type { CalendarDay, CalendarEvent, ResponseEvent } from '@/types'
+import type { AxiosResponse } from 'axios'
 
 export default defineComponent({
   name: 'EventCalendar',
   components: { Day },
   data() {
-    // TODOM: remove
-    const today = new Date()
-
     return {
       currentDate: new Date(),
-      events: [
-        {
-          id: 1,
-          title: 'title-1',
-          startDate: new Date(2023, today.getMonth(), today.getDate(), 13),
-          endDate: new Date(2023, today.getMonth(), today.getDate(), 15)
-        },
-        {
-          id: 2,
-          title: 'title-2',
-          startDate: new Date(2023, today.getMonth(), today.getDate(), 10),
-          endDate: new Date(2023, today.getMonth(), today.getDate(), 12)
-        },
-        {
-          id: 3,
-          title: 'title-2',
-          startDate: new Date(2023, today.getMonth(), today.getDate() + 1, 10),
-          endDate: new Date(2023, today.getMonth(), today.getDate() + 1, 12)
-        }
-      ]
+      events: [] as CalendarEvent[]
     }
   },
   computed: {
@@ -68,6 +48,15 @@ export default defineComponent({
       return days
     }
   },
+  created() {
+    this.$http.get('/events').then((res: AxiosResponse<ResponseEvent[]>) => {
+      this.events = res.data.map((resEvent) => ({
+        ...resEvent,
+        startDate: new Date(resEvent.startDate),
+        endDate: new Date(resEvent.endDate)
+      }))
+    })
+  },
   methods: {
     decrementMonth() {
       this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1)
@@ -80,6 +69,7 @@ export default defineComponent({
     },
     getEventsForDate(date: Date) {
       return this.events
+        .filter((event) => event.startDate.getMonth() === date.getMonth())
         .filter((event) => event.startDate.getDate() === date.getDate())
         .sort((e1, e2) => e1.startDate.valueOf() - e2.startDate.valueOf())
     }
@@ -90,12 +80,32 @@ export default defineComponent({
 <style scoped>
 .container {
   margin: 0 auto;
-  width: 1200px;
+  width: 1400px;
 }
 
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.header a,
+.header a:active {
+  display: inline-block;
+  padding: 5px 12px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.header a:hover {
+  background-color: #0056b3;
 }
 
 .btns {

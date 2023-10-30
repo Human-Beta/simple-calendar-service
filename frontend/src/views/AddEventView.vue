@@ -38,6 +38,7 @@
       </div>
 
       <button type="submit">Create Event</button>
+      <button type="button" @click="$router.push('/')">Go back</button>
     </v-form>
   </div>
 </template>
@@ -84,13 +85,14 @@ export default defineComponent({
   },
   methods: {
     submitForm() {
-      this.$http.post('/events', this.event)
-          .then(() => {
-            this.$router.push('/')
-          })
-          .catch((reason) => {
-            alert(reason)
-          })
+      this.$http
+        .post('/events', this.event)
+        .then(() => {
+          this.$router.push('/')
+        })
+        .catch((reason) => {
+          alert(reason)
+        })
     }
   }
 })
