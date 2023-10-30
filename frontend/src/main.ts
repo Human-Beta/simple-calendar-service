@@ -1,6 +1,8 @@
 import './assets/main.css'
 
 import { createApp } from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import App from './App.vue'
 import router from './router'
 import { defineRule } from 'vee-validate'
@@ -37,4 +39,5 @@ defineRule('after', (value: string, params: [Date, string], ctx) => {
   return targetDate.valueOf() >= date.valueOf() ? true : `${ctx.name} should be after ${dateName}`
 })
 
-app.mount('#app')
+axios.defaults.baseURL = 'http://localhost:8080'
+app.use(VueAxios, axios).mount('#app')
