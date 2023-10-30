@@ -48,7 +48,7 @@ export default defineComponent({
           title: 'title-2',
           startDate: new Date(2023, today.getMonth(), today.getDate() + 1, 10),
           endDate: new Date(2023, today.getMonth(), today.getDate() + 1, 12)
-        },
+        }
       ]
     }
   },
@@ -80,8 +80,8 @@ export default defineComponent({
     },
     getEventsForDate(date: Date) {
       return this.events
-          .filter(event => event.startDate.getDate() === date.getDate())
-          .sort((e1, e2) => e1.startDate.valueOf() - e2.startDate.valueOf())
+        .filter((event) => event.startDate.getDate() === date.getDate())
+        .sort((e1, e2) => e1.startDate.valueOf() - e2.startDate.valueOf())
     }
   }
 })

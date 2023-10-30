@@ -8,7 +8,8 @@
         class="event"
         @click="goToEventDetailsPage(event.id)"
       >
-        {{ event.startDate.toLocaleString('default', { hour: 'numeric' }).replace(' ', '') }} {{ event.title }}
+        {{ event.startDate.toLocaleString('default', { hour: 'numeric' }).replace(' ', '') }}
+        {{ event.title }}
       </div>
     </div>
   </div>
