@@ -7,7 +7,7 @@
         <div @click="incrementMonth">></div>
       </div>
       <h1 class="month">
-        {{ currentDate.format("MMMM") }}
+        {{ currentDate.format('MMMM') }}
       </h1>
       <router-link to="/add-event">Add event</router-link>
     </div>
@@ -23,8 +23,8 @@ import type { AxiosResponse } from 'axios'
 import Day from '@/components/Day.vue'
 import { responseEventToCalendarEvent } from '@/utils/event.utils'
 import type { CalendarDay, CalendarEvent, ResponseEvent } from '@/types'
-import type { Moment } from "moment";
-import {copy, now} from "@/utils/date.utils";
+import type { Moment } from 'moment'
+import { copy, now } from '@/utils/date.utils'
 
 export default defineComponent({
   name: 'EventCalendar',
@@ -68,8 +68,12 @@ export default defineComponent({
     },
     getEventsForDate(date: Moment) {
       return this.events
-        .filter((event) => event.startDate.get("month") === date.get("month"))
-        .filter((event) => event.startDate.get("date") === date.get("date"))
+        .filter((event) => event.startDate.get('month') === date.get('month'))
+        .filter(
+          (event) =>
+            event.startDate.get('date') <= date.get('date') &&
+            date.get('date') <= event.endDate.get('date')
+        )
         .sort((e1, e2) => e1.startDate.valueOf() - e2.startDate.valueOf())
     }
   }

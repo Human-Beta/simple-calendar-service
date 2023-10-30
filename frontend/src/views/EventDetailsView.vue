@@ -104,21 +104,22 @@ export default defineComponent({
         })
     },
     deleteEvent() {
-      this.$http.delete(`/events/${this.$route.params.id}`)
-          .then(this.goToHomePage)
-          .catch((reason) => {
-            alert(reason)
-          })
+      this.$http
+        .delete(`/events/${this.$route.params.id}`)
+        .then(this.goToHomePage)
+        .catch((reason) => {
+          alert(reason)
+        })
     },
     submitForm() {
       this.$http
-          .put(`/events/${this.$route.params.id}`, this.event)
-          .then(() => {
-            this.$router.push('/')
-          })
-          .catch((reason) => {
-            alert(reason)
-          })
+        .put(`/events/${this.$route.params.id}`, this.event)
+        .then(() => {
+          this.$router.push('/')
+        })
+        .catch((reason) => {
+          alert(reason)
+        })
     },
     goToHomePage() {
       this.$router.push('/')

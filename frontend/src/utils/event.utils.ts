@@ -1,5 +1,5 @@
 import type { CalendarEvent, ResponseEvent } from '@/types'
-import { parseDate } from "@/utils/date.utils";
+import { parseDate } from '@/utils/date.utils'
 
 export const responseEventToCalendarEvent = (resEvent: ResponseEvent): CalendarEvent => {
   return {

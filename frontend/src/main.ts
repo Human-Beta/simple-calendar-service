@@ -6,8 +6,8 @@ import VueAxios from 'vue-axios'
 import App from './App.vue'
 import router from './router'
 import { defineRule } from 'vee-validate'
-import type { Moment } from "moment";
-import { parseDate } from "@/utils/date.utils";
+import type { Moment } from 'moment'
+import { parseDate } from '@/utils/date.utils'
 
 const app = createApp(App)
 
@@ -22,8 +22,7 @@ defineRule('before', (value: string, params: [Moment, string], ctx) => {
   const date = params[0]
   const dateName = params[1]
 
-  // TODOM: check it
-  if (!date) {
+  if (!date || !date.isValid()) {
     return true
   }
 
@@ -35,8 +34,7 @@ defineRule('after', (value: string, params: [Moment, string], ctx) => {
   const date = params[0]
   const dateName = params[1]
 
-  // TODOM: check it
-  if (!date) {
+  if (!date || !date.isValid()) {
     return true
   }
 

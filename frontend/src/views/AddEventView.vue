@@ -47,7 +47,7 @@
 import { defineComponent } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import { formatDate, parseDate } from '@/utils/date.utils'
-import type { Moment } from "moment/moment";
+import type { Moment } from 'moment/moment'
 
 export default defineComponent({
   components: {
