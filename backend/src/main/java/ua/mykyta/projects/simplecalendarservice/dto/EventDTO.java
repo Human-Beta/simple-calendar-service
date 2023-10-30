@@ -1,6 +1,5 @@
 package ua.mykyta.projects.simplecalendarservice.dto;
 
-import ua.mykyta.projects.simplecalendarservice.validator.DateInFuture;
 import ua.mykyta.projects.simplecalendarservice.validator.DateRange;
 
 import javax.validation.constraints.NotBlank;
@@ -17,7 +16,6 @@ public class EventDTO {
 	private String description;
 
 	@NotNull(message = "Start date of event is absent")
-	@DateInFuture
 	private LocalDateTime startDate;
 
 	@NotNull(message = "End date of event is absent")
