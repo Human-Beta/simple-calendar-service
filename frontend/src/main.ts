@@ -42,4 +42,5 @@ defineRule('after', (value: string, params: [Moment, string], ctx) => {
 })
 
 axios.defaults.baseURL = 'http://localhost:8080'
+
 app.use(VueAxios, axios).mount('#app')
